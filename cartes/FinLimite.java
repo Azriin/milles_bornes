@@ -6,4 +6,8 @@ public class FinLimite extends Limite {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "Fin Limite";
+	}
 }

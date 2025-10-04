@@ -1,22 +1,21 @@
 package jeu;
 
 import java.util.ConcurrentModificationException;
-
-import javax.swing.text.AttributeSet;
-import javax.swing.text.html.HTML.Tag;
-import javax.swing.text.html.HTMLDocument.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Iterator;
 
 import cartes.Carte;
 
-public class Sabot {
+public class Sabot implements Iterable<Carte>{
 	private Carte[] cartes;
-	private int nbCartes = 110;
+	private int nbCartes = 106;
 	
-	private Iterateur<Carte> ite = new Iterateur<>();
+	private Iterator<Carte> ite = iterator();
 	private int nbOperationReference = 0;
 	
 	public Sabot(Carte[] cartes) {
 		this.cartes = cartes;
+		nbCartes = cartes.length;
 		
 	}
 	
@@ -32,8 +31,21 @@ public class Sabot {
 		}
 	}
 
+	@Override
+	public Iterator<Carte> iterator(){
+		return new Iterateur();
+	}
 	
-	private class Iterateur implements Iterator<E> {
+	public Carte piocher() {		
+		Carte carte = null;
+		if (ite.hasNext()) {
+			carte = ite.next();
+			ite.remove();
+		}
+		return carte;
+	}
+	
+	private class Iterateur implements Iterator<Carte> {
 		private int pointeur = 0;
 		private boolean canRemove = false;
 		private int nbOperation = nbOperationReference;
@@ -45,24 +57,40 @@ public class Sabot {
 		}
 		
 		@Override
-		public E next() {
+		public Carte next() {
 			verifierConcurence();
 			if (hasNext()) {
 				canRemove = true;
+				nbOperation ++;
+				nbOperationReference ++;
 				return cartes[pointeur++];
 			} else {
-				throw new IllegalStateException();
+				throw new NoSuchElementException();
 			}
 		}
 
+		@Override
 		public boolean hasNext() {
-			return nbCartes > pointeur;
+			return pointeur < nbCartes;
 		}
 		
+		@Override
 		public void remove() {
 			verifierConcurence();
+			if (!canRemove) {
+				throw new IllegalStateException();
+			}
+			for (int i = pointeur-1; i < nbCartes-1; i++) {
+				cartes[i] = cartes[i+1];
+			}
+			
 			canRemove = false;
+			nbOperationReference ++;
+			nbOperation ++;
+			nbCartes --;
+			pointeur --;
 		}
 		
 	}
+
 }

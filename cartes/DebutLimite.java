@@ -6,4 +6,8 @@ public class DebutLimite extends Limite {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "Limite 50";
+	}
 }
