@@ -52,7 +52,39 @@ public class JeuDeCartes {
 		return affichage.toString();
 	}
 	
+	private int[] listOccurance() {
+		int[] lstOcc = new int[19];
+		for (int i = 0; i < typesDeCartes.length; i++) {
+			lstOcc[i] = typesDeCartes[i].nbExemplaires;
+		}
+		return lstOcc;
+	}
 	
+	private int positionTypeConfiguration(Carte carte) {
+		int i = typesDeCartes.length-1;
+		while (i >= 0) {
+			if (typesDeCartes[i].getCarte().equals(carte)) {
+				return i;
+			}
+			i --;
+		}
+		return i;
+	}
+	
+	public boolean checkCount() {
+		Carte[] cartes = donnerCartes();
+		int[] lstOcc = listOccurance();
+		
+		for (Carte carte : cartes) {
+			lstOcc[positionTypeConfiguration(carte)] --;
+		}
+		for (int occ : lstOcc) {
+			if (occ != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	private class Configuration {
 		private int nbExemplaires;
