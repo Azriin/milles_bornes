@@ -12,4 +12,12 @@ public class Attaque extends Bataille {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Attaque attaque) {
+			return super.equals(attaque);
+		}
+		return false;
+	}
+	
 }

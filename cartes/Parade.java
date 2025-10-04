@@ -12,4 +12,12 @@ public class Parade extends Bataille {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Parade parade) {
+			return super.equals(parade);
+		}
+		return false;
+	}
+	
 }
