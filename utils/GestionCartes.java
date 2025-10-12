@@ -2,7 +2,6 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -45,19 +44,24 @@ public class GestionCartes {
 		return true;
 	}
 	
+	private static <E> List<E> ajoutConsecutif(List<E> l, E elt){
+		for (int i = 0; i < l.size(); i++) {
+			if (l.get(i).equals(elt)) {
+				l.add(i, elt);
+				return l;
+			}
+		}
+		l.add(elt);
+		return l;
+	}
+	
 	public static <E> List<E> rassembler(List<E> l) {
-		
-//		Carte carteRef = l.get(0);
-//		for (ListIterator<Carte> iterator = l.listIterator(); iterator.hasNext();) {
-//			Carte carte = (Carte) iterator.next();
-//			if (carteRef.equals(carte)) {
-//				iterator.remove();
-//				iterator.add(0, carte);
-//			}
-//		}
-//		
-//		return l;
-		return null;
+		List<E> listRassembler = new ArrayList<>();
+		for (ListIterator<E> iterator = listRassembler.listIterator(); iterator.hasNext();) {
+			E e = (E) iterator.next();
+			ajoutConsecutif(listRassembler, e);
+		}
+		return listRassembler;
 	}
 
 	private static <E> boolean existeResteListe(List<E> l, int indice) {
@@ -76,7 +80,10 @@ public class GestionCartes {
 	}
 	
 	public static <E> boolean verifierRassemblement(List<E> l) {
-		E eRef = l.getFirst();
+		if (l.size() == 0) {
+			return true;
+		}
+		E eRef = l.get(0);
 		int indice = 0;
 		for (ListIterator<E> iterator = l.listIterator(); iterator.hasNext();) {
 			E e = (E) iterator.next();
