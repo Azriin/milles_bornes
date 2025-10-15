@@ -26,6 +26,7 @@ public class Sabot implements Iterable<Carte>{
 	public void ajouterCarte(Carte carte) {
 		if (nbCartes < cartes.length) {
 			cartes[nbCartes ++] = carte;
+			nbOperationReference ++;
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}

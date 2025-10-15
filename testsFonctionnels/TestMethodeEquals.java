@@ -2,6 +2,9 @@ package testsFonctionnels;
 
 import cartes.Attaque;
 import cartes.Borne;
+import cartes.DebutLimite;
+import cartes.FinLimite;
+import cartes.Limite;
 import cartes.Parade;
 import cartes.Type;
 

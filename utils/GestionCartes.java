@@ -57,22 +57,19 @@ public class GestionCartes {
 	
 	public static <E> List<E> rassembler(List<E> l) {
 		List<E> listRassembler = new ArrayList<>();
-		for (ListIterator<E> iterator = listRassembler.listIterator(); iterator.hasNext();) {
+		for (ListIterator<E> iterator = l.listIterator(); iterator.hasNext();) {
 			E e = (E) iterator.next();
-			ajoutConsecutif(listRassembler, e);
+			listRassembler = ajoutConsecutif(listRassembler, e);
 		}
 		return listRassembler;
 	}
 
 	private static <E> boolean existeResteListe(List<E> l, int indice) {
-		E eCherche = l.get(indice);
-		int indiceIte = indice+1;
-		if (indiceIte == l.size()) {
-			return false;
-		}
+		E eCherche = l.get(indice-1);
+		int indiceIte = indice;
 		for (ListIterator<E> iterator = l.listIterator(indiceIte); iterator.hasNext();) {
 			E e = (E) iterator.next();
-			if (e == eCherche) {
+			if (e.equals(eCherche)) {
 				return true;
 			}
 		}
@@ -80,14 +77,13 @@ public class GestionCartes {
 	}
 	
 	public static <E> boolean verifierRassemblement(List<E> l) {
-		if (l.size() == 0) {
-			return true;
-		}
+		
 		E eRef = l.get(0);
 		int indice = 0;
 		for (ListIterator<E> iterator = l.listIterator(); iterator.hasNext();) {
 			E e = (E) iterator.next();
-			if (eRef != e && existeResteListe(l, indice)) {
+			if (!(eRef.equals(e)) && existeResteListe(l, indice)) {
+				System.out.println("indice = " + indice);
 				return false;
 			}
 			eRef = e;
