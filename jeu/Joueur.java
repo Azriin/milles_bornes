@@ -52,8 +52,4 @@ public class Joueur {
 	public void deposer (Carte c) {
 		zoneDeJeu.deposer(c);
 	}
-	
-	public int donnerLimitationVitesse() {
-		return zoneDeJeu.donnerLimitationVitesse();
-	}
 }
