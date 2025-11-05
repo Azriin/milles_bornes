@@ -10,7 +10,7 @@ import utils.GestionCartes;
 
 public class Jeu {
 	Sabot sabot;
-	
+		
 	public Jeu() {
 		Carte[] jeuDeCarte = new JeuDeCartes().donnerCartes();
 		List<Carte> lstCarte = new ArrayList<>();

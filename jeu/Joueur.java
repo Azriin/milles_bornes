@@ -1,5 +1,7 @@
 package jeu;
 
+import java.util.Set;
+
 import cartes.Carte;
 
 public class Joueur {
@@ -51,5 +53,9 @@ public class Joueur {
 	
 	public void deposer (Carte c) {
 		zoneDeJeu.deposer(c);
+	}
+	
+	public void coupsPossibles(Set<Joueur> participants) {
+		// todo
 	}
 }
