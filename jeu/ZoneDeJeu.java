@@ -2,7 +2,6 @@ package jeu;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -25,6 +24,17 @@ public class ZoneDeJeu {
 	private List<Bataille> pileBataille = new ArrayList<>();
 	private List<Borne> collectionBorne = new ArrayList<>();
 	private Set<Botte> bottes = new HashSet<>();
+	
+	public Set<Botte> getBottes() {
+		return bottes;
+	}
+	
+	public Bataille getSommetPileBataille() {
+		if (pileBataille.isEmpty()) {
+			return null;
+		}
+		return pileBataille.getLast();
+	}
 	
 	public int donnerLimitationVitesse() {
 		if (pileLimite.size() == 0 || pileLimite.getLast().equals(new FinLimite()) || estPrioritaire()) {
@@ -127,4 +137,5 @@ public class ZoneDeJeu {
 	private boolean estPrioritaire() {
 		return bottes.contains(Cartes.PRIORITAIRE);
 	}
+	
 }

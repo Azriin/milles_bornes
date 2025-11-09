@@ -1,5 +1,8 @@
 package jeu;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Set;
 
 import cartes.Carte;
@@ -7,7 +10,7 @@ import cartes.Carte;
 public class Joueur {
 	private String nom;
 	private ZoneDeJeu zoneDeJeu;
-	private MainJoueur mainJoueur;
+	private MainJoueur mainJoueur = new MainJoueur();
 	
 	public MainJoueur getMainJoueur() {
 		return mainJoueur;
@@ -20,6 +23,11 @@ public class Joueur {
 	public Joueur(String nom, ZoneDeJeu zoneDeJeu) {
 		this.nom = nom;
 		this.zoneDeJeu = zoneDeJeu;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 31*nom.hashCode();
 	}
 	
 	@Override
@@ -55,7 +63,65 @@ public class Joueur {
 		zoneDeJeu.deposer(c);
 	}
 	
-	public void coupsPossibles(Set<Joueur> participants) {
-		// todo
+	private Set<Coup> coupsContre(Joueur joueur) {
+		Set<Coup> setCoup= new HashSet<>();
+		for (ListIterator<Carte> iteCarte = this.mainJoueur.getMain().listIterator(); iteCarte.hasNext();) {
+			Carte carte = (Carte) iteCarte.next();
+			Coup coup = new Coup(this, joueur, carte);
+			if (coup.estValide()) {
+				setCoup.add(coup);
+			}
+		}
+		return setCoup;
+	}
+	
+	public Set<Coup> coupsPossibles(Set<Joueur> participants) {
+		Set<Coup> setPossible = new HashSet<>();
+		for (Iterator<Joueur> iteJoueur = participants.iterator(); iteJoueur.hasNext();) {
+			Joueur joueur = (Joueur) iteJoueur.next();
+			setPossible.addAll(coupsContre(joueur));
+		}
+		return setPossible;
+	}
+	
+	public Set<Coup> coupDefausse() {
+		Set<Coup> setDefausse = new HashSet<>();
+		setDefausse.addAll(coupsContre(null));
+		return setDefausse;
+	}
+	
+	public void retirerDeLaMain(Carte carte) {
+		mainJoueur.jouer(carte);
+	}
+	
+	private Coup coupAleatoire(Set<Coup> setCoup) {
+		int indice = (int) (Math.random()*setCoup.size());
+		Coup[] lstCoup = (Coup[]) setCoup.toArray();
+		return lstCoup[indice];
+	}
+	
+	public Coup choisirCoup(Set<Joueur> participants) {
+		Coup coup = null;
+		participants.remove(this);
+//		participants.add(null);
+		Set<Coup> coupParticipants = coupsPossibles(participants);
+		Set<Coup> coupDefausse = coupDefausse();
+		if (!coupParticipants .isEmpty()) {
+			coup = coupAleatoire(coupParticipants );
+		} else if (!coupDefausse.isEmpty()) {
+			coup = coupAleatoire(coupDefausse);
+		}
+		return coup;
+	}
+	
+	public String afficherEtatJoueur() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(zoneDeJeu.getBottes());
+		sb.append(zoneDeJeu.donnerLimitationVitesse() == 50);
+		sb.append(zoneDeJeu.getSommetPileBataille());
+		
+		sb.append(mainJoueur.getMain());
+		
+		return sb.toString();
 	}
 }

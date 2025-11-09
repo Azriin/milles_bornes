@@ -20,4 +20,8 @@ public class MainJoueur {
 	public String toString() {
 		return main.toString();
 	}
+	
+	public List<Carte> getMain() {
+		return main;
+	}
 }
