@@ -12,9 +12,20 @@ public class TestJeu {
 		Joueur joueur3 = new Joueur("Luffy", new ZoneDeJeu());
 		jeu.inscrire(joueur1, joueur2, joueur3);
 		jeu.distribuerCartes();
-		jeu.jouerTour(joueur1);
-		jeu.jouerTour(joueur2);
-		jeu.jouerTour(joueur3);
+//		System.out.println(jeu.jouerTour(joueur1));
+//		System.out.println(jeu.jouerTour(joueur2));
+//		System.out.println(jeu.jouerTour(joueur3));
+//		
+//		System.out.println(jeu.jouerTour(joueur1));
+//		System.out.println(jeu.jouerTour(joueur2));
+//		System.out.println(jeu.jouerTour(joueur3));
+//		
+//		System.out.println(jeu.jouerTour(joueur1));
+//		System.out.println(jeu.jouerTour(joueur2));
+//		System.out.println(jeu.jouerTour(joueur3));
+		
+		System.out.println(jeu.lancer());
+		
 		
 	}
 }

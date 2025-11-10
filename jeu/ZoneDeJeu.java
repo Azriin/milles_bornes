@@ -66,14 +66,11 @@ public class ZoneDeJeu {
 	}
 	
 	public boolean peutAvancer() {
-//		System.out.println("prio ? " + estPrioritaire() + " | empty ? " + pileBataille.isEmpty());
-		
 		if (!pileBataille.isEmpty()) {
 			if (pileBataille.getLast().equals(Cartes.FEU_VERT)) {
 				return true;
 			} if (estPrioritaire()) {
 				Bataille sommet = pileBataille.getLast();
-//				System.out.println("sommet : " + sommet + " | botte ? " + bottes.contains(new Botte(sommet.getType())));
 				return (sommet.getClass().equals(new Parade(null).getClass()))
 					|| (sommet.equals(Cartes.FEU_ROUGE))
 					|| (sommet.getClass().equals(new Attaque(null).getClass()) && bottes.contains(new Botte(sommet.getType())));

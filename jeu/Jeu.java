@@ -2,8 +2,8 @@ package jeu;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,8 +13,9 @@ import utils.GestionCartes;
 
 public class Jeu {
 	private Sabot sabot;
-	private Set<Joueur> joueurs = new HashSet<>();
+	private Set<Joueur> joueurs = new LinkedHashSet<>();
 	private final int NBCARTES = 6;
+	private Iterator<Joueur> iteJoueur;
 	
 	public Jeu() {
 		Carte[] jeuDeCarte = new JeuDeCartes().donnerCartes();
@@ -41,14 +42,47 @@ public class Jeu {
 	}
 	
 	public String jouerTour(Joueur joueur) {
+		StringBuilder sb = new StringBuilder();
+		Carte carte = sabot.piocher();
+		sb.append("Le joueur " + joueur + " a pioche " + carte + "\n");
+		joueur.donner(carte);
 		Coup coup = joueur.choisirCoup(joueurs);
+//		if (coup == null) {
+//			return "coup null";
+//		}
 		joueur.retirerDeLaMain(coup.getCarte());
+		sb.append("il a dans sa main : " + joueur.getMainJoueur() + "\n");
 		if (coup.getCible() == null) {
 			sabot.ajouterCarte(coup.getCarte());
 		} else {
-			coup.getCible().donner(coup.getCarte());
+			coup.getCible().deposer(coup.getCarte());
 		}
-		return coup.toString();
+		sb.append(joueur + " " + coup + "\n");
+		return sb.toString();
 	}
 	
+	public Joueur donnerJoueurSuivant() {
+		if (!iteJoueur.hasNext()) {
+			iteJoueur = joueurs.iterator();
+		}
+		return iteJoueur.next();
+	}
+	
+	public String lancer() {
+		StringBuilder sb = new StringBuilder();
+		iteJoueur = joueurs.iterator();
+		Joueur joueurCourant;
+		do {
+			joueurCourant = donnerJoueurSuivant();
+			sb.append(jouerTour(joueurCourant));
+		} while (joueurCourant.donnerKmParcourus() < 1000);
+		Joueur premier = joueurCourant;
+		
+		sb.append("\nClassement: \n");
+		do {
+			sb.append(joueurCourant + " " + joueurCourant.donnerKmParcourus() + "km\n");
+			joueurCourant = donnerJoueurSuivant();
+		} while (joueurCourant != premier);
+		return sb.toString();
+	}
 }

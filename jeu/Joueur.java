@@ -63,6 +63,10 @@ public class Joueur {
 		zoneDeJeu.deposer(c);
 	}
 	
+	public boolean estDepotAutorise(Carte carte) {
+		return zoneDeJeu.estDepotAutorise(carte);
+	}
+	
 	private Set<Coup> coupsContre(Joueur joueur) {
 		Set<Coup> setCoup= new HashSet<>();
 		for (ListIterator<Carte> iteCarte = this.mainJoueur.getMain().listIterator(); iteCarte.hasNext();) {
@@ -96,18 +100,16 @@ public class Joueur {
 	
 	private Coup coupAleatoire(Set<Coup> setCoup) {
 		int indice = (int) (Math.random()*setCoup.size());
-		Coup[] lstCoup = (Coup[]) setCoup.toArray();
+		Coup[] lstCoup = setCoup.toArray(new Coup[0]);
 		return lstCoup[indice];
 	}
 	
 	public Coup choisirCoup(Set<Joueur> participants) {
 		Coup coup = null;
-		participants.remove(this);
-//		participants.add(null);
 		Set<Coup> coupParticipants = coupsPossibles(participants);
 		Set<Coup> coupDefausse = coupDefausse();
-		if (!coupParticipants .isEmpty()) {
-			coup = coupAleatoire(coupParticipants );
+		if (!coupParticipants.isEmpty()) {
+			coup = coupAleatoire(coupParticipants);
 		} else if (!coupDefausse.isEmpty()) {
 			coup = coupAleatoire(coupDefausse);
 		}

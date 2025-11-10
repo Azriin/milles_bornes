@@ -2,7 +2,7 @@ package jeu;
 
 import cartes.Attaque;
 import cartes.Carte;
-import cartes.Limite;
+import cartes.DebutLimite;
 
 public class Coup {
 	private Joueur courant;
@@ -22,15 +22,19 @@ public class Coup {
 
 	@Override
 	public int hashCode() {
-		return 7*(courant.hashCode()+cible.hashCode()+carte.hashCode());
+		int hashCible = 0;
+		if (cible != null) {
+			hashCible += cible.hashCode();
+		}
+		return 7*(courant.hashCode()+hashCible+carte.hashCode());
 	}
 	
 	@Override
 	public String toString() {
 		if (cible == null) {
-			return "defausse la carte" + carte;
+			return "defausse la carte " + carte;
 		}
-		return "depose la coarte " + carte + " dans la zone de jeu de " + cible;
+		return "depose la carte " + carte + " dans la zone de jeu de " + cible;
 	}
 	
 	public Carte getCarte() {
@@ -52,8 +56,13 @@ public class Coup {
 	}
 
 	public boolean estValide() {
-		return ((carte instanceof Attaque || carte instanceof Limite) && !cible.equals(courant)
-			|| (cible.equals(courant)));
+		if (cible == null) {
+			return true;
+		}
+		if (!cible.equals(courant)) {
+			return (carte instanceof Attaque || carte instanceof DebutLimite) && cible.estDepotAutorise(carte);
+		}
+		return !(carte instanceof Attaque || carte instanceof DebutLimite) && cible.estDepotAutorise(carte);
 	}
 	
 }
